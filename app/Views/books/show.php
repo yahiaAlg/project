@@ -2,95 +2,68 @@
 
 <div class="card">
     <div class="card-body">
-        <div class="row">
-            <div class="col-md-4">
-                <img src="<?= e($book['cover_image']) ?>" alt="<?= e($book['title']) ?>" class="img-fluid rounded shadow">
+        <div class="book-detail">
+            <img src="<?= $book['cover_image'] ?>" alt="<?= e($book['title']) ?>" class="book-cover">
+            
+            <div class="book-info">
+                <h2><?= e($book['title']) ?></h2>
+                <p class="text-muted">by <?= e($book['author']) ?></p>
                 
-                <div class="mt-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="badge <?= $book['available_copies'] > 0 ? 'badge-success' : 'badge-danger' ?>">
-                            <?= $book['available_copies'] > 0 ? 'Available' : 'Unavailable' ?>
-                        </span>
-                        <span class="text-muted">
+                <div class="book-meta">
+                    <div class="book-meta-item">
+                        <span class="book-meta-label">ISBN:</span>
+                        <span><?= e($book['isbn']) ?></span>
+                    </div>
+                    <div class="book-meta-item">
+                        <span class="book-meta-label">Published Year:</span>
+                        <span><?= e($book['published_year']) ?></span>
+                    </div>
+                    <div class="book-meta-item">
+                        <span class="book-meta-label">Category:</span>
+                        <span><?= e($book['category']) ?></span>
+                    </div>
+                    <div class="book-meta-item">
+                        <span class="book-meta-label">Shelf Location:</span>
+                        <span><?= e($book['shelf_location']) ?></span>
+                    </div>
+                    <div class="book-meta-item">
+                        <span class="book-meta-label">Availability:</span>
+                        <span class="badge <?= $book['available_copies'] > 0 ? 'available' : 'badge-danger' ?>">
                             <?= $book['available_copies'] ?>/<?= $book['total_copies'] ?> copies available
                         </span>
                     </div>
-                    
-                    <?php if (is_logged_in()): ?>
-                        <?php if ($book['available_copies'] > 0): ?>
-                            <a href="/loans/create?book_id=<?= $book['id'] ?>" class="btn btn-primary w-100">
-                                <i class="material-icons mr-1">book</i>
-                                Borrow Book
-                            </a>
-                        <?php else: ?>
-                            <button class="btn btn-secondary w-100" disabled>
-                                <i class="material-icons mr-1">block</i>
-                                Currently Unavailable
-                            </button>
-                        <?php endif; ?>
-                    <?php else: ?>
-                        <a href="/login" class="btn btn-primary w-100">
-                            <i class="material-icons mr-1">login</i>
-                            Login to Borrow
-                        </a>
-                    <?php endif; ?>
-                    
-                    <?php if (is_admin()): ?>
-                        <div class="mt-3">
-                            <a href="/books/<?= $book['id'] ?>/edit" class="btn btn-outline-primary w-100">
-                                <i class="material-icons mr-1">edit</i>
-                                Edit Book
-                            </a>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-            
-            <div class="col-md-8">
-                <h1 class="mb-2"><?= e($book['title']) ?></h1>
-                <h3 class="text-muted mb-4">by <?= e($book['author']) ?></h3>
-                
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <p><strong>ISBN:</strong> <?= e($book['isbn']) ?></p>
-                        <p><strong>Published Year:</strong> <?= e($book['published_year']) ?></p>
-                        <p><strong>Category:</strong> <?= e($book['category']) ?></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong>Shelf Location:</strong> <?= e($book['shelf_location']) ?></p>
-                        <p><strong>Added:</strong> <?= format_date($book['created_at'], 'F j, Y') ?></p>
-                        <p><strong>Last Updated:</strong> <?= format_date($book['updated_at'], 'F j, Y') ?></p>
-                    </div>
                 </div>
                 
-                <?php if (!empty($book['description'])): ?>
-                    <h4>Description</h4>
-                    <p class="mb-4"><?= nl2br(e($book['description'])) ?></p>
-                <?php endif; ?>
-                
-                <?php if (!empty($related)): ?>
-                    <h4>Related Books</h4>
-                    <div class="row">
-                        <?php foreach ($related as $relatedBook): ?>
-                            <div class="col-md-3">
-                                <a href="/books/<?= $relatedBook['id'] ?>" class="text-decoration-none">
-                                    <div class="card book-card">
-                                        <img src="<?= e($relatedBook['cover_image']) ?>" 
-                                             alt="<?= e($relatedBook['title']) ?>" 
-                                             class="book-card-img">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-truncate"><?= e($relatedBook['title']) ?></h5>
-                                            <p class="card-text text-muted"><?= e($relatedBook['author']) ?></p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
+                <div class="book-actions">
+                    <a href="/loans/create?book_id=<?= $book['id'] ?>" class="btn btn-primary">
+                        <i class="material-icons mr-1">book</i> Borrow Book
+                    </a>
+                </div>
             </div>
         </div>
+        
+        <?php if (!empty($book['description'])): ?>
+            <div class="book-description">
+                <h3>Description</h3>
+                <p><?= nl2br(e($book['description'])) ?></p>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
+
+<?php if (!empty($related)): ?>
+    <h3 class="related-books-title">Related Books</h3>
+    <div class="related-books">
+        <?php foreach ($related as $relatedBook): ?>
+            <a href="/books/<?= $relatedBook['id'] ?>" class="related-book-card">
+                <img src="<?= $relatedBook['cover_image'] ?>" alt="<?= e($relatedBook['title']) ?>" class="related-book-img">
+                <div class="related-book-info">
+                    <h4 class="related-book-title"><?= e($relatedBook['title']) ?></h4>
+                    <p class="related-book-author"><?= e($relatedBook['author']) ?></p>
+                </div>
+            </a>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
 
 <?php $this->partial('_footer'); ?>

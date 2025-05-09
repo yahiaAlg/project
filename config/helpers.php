@@ -9,8 +9,13 @@
  * @param string $text The text to escape
  * @return string The escaped text
  */
-function e($text) {
-    return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+// In config/helpers.php, line 13
+function e($string) {
+    // Fix: Check if the value is null before passing to htmlspecialchars
+    if ($string === null) {
+        return '';
+    }
+    return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
 }
 
 /**

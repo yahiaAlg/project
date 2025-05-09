@@ -1,3 +1,4 @@
+<?php $this->partial('_header', ['pageTitle' => 'Login']); ?>
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="card">
@@ -37,3 +38,4 @@
         </div>
     </div>
 </div>
+<?php $this->partial('_footer'); ?>

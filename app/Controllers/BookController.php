@@ -49,6 +49,10 @@ class BookController extends Controller {
                 'category' => $category,
                 'query' => $query,
                 'availability' => $availability
+            ],
+            /*added styles*/
+            'styles' => [
+                'book.css'
             ]
         ]);
     }

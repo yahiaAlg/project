@@ -1,0 +1,55 @@
+/* Book detail page styling */
+.book-detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-5);
+  margin-bottom: var(--spacing-5);
+}
+
+.book-cover {
+  max-width: 250px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.book-info {
+  flex: 1;
+  min-width: 300px;
+}
+
+.book-meta {
+  margin-bottom: var(--spacing-4);
+}
+
+.book-meta-item {
+  margin-bottom: var(--spacing-2);
+  display: flex;
+}
+
+.book-meta-label {
+  font-weight: var(--font-medium);
+  width: 150px;
+  flex-shrink: 0;
+}
+
+.book-actions {
+  margin-top: var(--spacing-4);
+}
+
+.book-description {
+  margin-top: var(--spacing-4);
+}
+
+.related-books-title {
+  margin-top: var(--spacing-6);
+  margin-bottom: var(--spacing-4);
+  padding-bottom: var(--spacing-2);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+/* Fix for availability badge */
+.badge.available {
+  background-color: var(--success);
+  color: white;
+}
