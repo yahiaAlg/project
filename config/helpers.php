@@ -101,6 +101,22 @@ function format_date($date, $format = 'Y-m-d') {
 }
 
 /**
+ * Calculate the difference in days between two dates
+ *
+ * @param string $date1 The first date
+ * @param string $date2 The second date
+ * @return int The difference in days
+ */
+function days_difference($date1, $date2) {
+    $datetime1 = new DateTime($date1);
+    $datetime2 = new DateTime($date2);
+
+    $interval = $datetime1->diff($datetime2);
+
+    return $interval->days;
+}
+
+/**
  * Check if user is logged in
  * 
  * @return bool True if logged in, false otherwise

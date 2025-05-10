@@ -3,10 +3,7 @@
 
     <div class="card">
         <div class="card-header">
-            <h2 class="card-title">All Loans</h2>
-            <a href="/loans/create" class="btn btn-primary">
-                <i class="material-icons mr-1">add</i> New Loan
-            </a>
+            <h2 class="card-title">My Loans</h2>
         </div>
         <div class="card-body">
             <div class="filter-bar mb-4">
@@ -24,48 +21,51 @@
             </div>
 
             <?php if (count($loans) > 0): ?>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Book</th>
-                                <th>Member</th>
-                                <th>Issue Date</th>
-                                <th>Due Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($loans as $loan): ?>
-                                <tr>
-                                    <td><?= e($loan['book_title']) ?></td>
-                                    <td><?= e($loan['member_name']) ?></td>
-                                    <td><?= format_date($loan['issue_date']) ?></td>
-                                    <td><?= format_date($loan['due_date']) ?></td>
-                                    <td>
-                                        <?php if ($loan['returned_at']): ?>
-                                            <span class="badge badge-success">Returned</span>
-                                        <?php elseif (strtotime($loan['due_date']) < time()): ?>
-                                            <span class="badge badge-danger">Overdue</span>
-                                        <?php else: ?>
-                                            <span class="badge available">Active</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <a href="/loans/<?= $loan['id'] ?>" class="btn btn-sm btn-primary">View</a>
+                <div class="book-grid">
+                    <?php foreach ($loans as $loan): ?>
+                        <div class="card">
+                            <div class="d-flex p-3">
+                                <img src="<?= !empty($loan['book_cover']) ? e($loan['book_cover']) : '/assets/images/default-book.jpg' ?>" 
+                                        alt="<?= e($loan['book_title']) ?>" class="rounded mr-3" style="width: 80px; height: 120px; object-fit: cover;">
+                                
+                                <div class="flex-grow-1">
+                                    <h4 class="mb-1"><?= e($loan['book_title']) ?></h4>
+                                    <p class="text-muted mb-2"><?= e($loan['book_author']) ?></p>
+                                    
+                                    <div class="book-meta-item">
+                                        <span class="book-meta-label">Borrowed:</span>
+                                        <span><?= format_date($loan['issue_date']) ?></span>
+                                    </div>
+                                    
+                                    <div class="book-meta-item">
+                                        <span class="book-meta-label">Due Date:</span>
+                                        <span><?= format_date($loan['due_date']) ?></span>
+                                    </div>
+                                    
+                                    <div class="book-meta-item">
+                                        <span class="book-meta-label">Status:</span>
+                                        <span>
+                                            <?php if ($loan['returned_at']): ?>
+                                                <span class="badge badge-success">Returned</span>
+                                            <?php elseif (strtotime($loan['due_date']) < time()): ?>
+                                                <span class="badge badge-danger">Overdue</span>
+                                            <?php else: ?>
+                                                <span class="badge available">Active</span>
+                                            <?php endif; ?>
+                                        </span>
+                                    </div>
+                                    
+                                    <div class="mt-3">
+                                        <a href="/loans/<?= $loan['id'] ?>" class="btn btn-sm btn-primary">Details</a>
                                         
-                                        <?php if (!$loan['returned_at']): ?>
-                                            <a href="/loans/<?= $loan['id'] ?>/return" class="btn btn-sm btn-success">Return</a>
+                                        <?php if (!$loan['returned_at'] && strtotime($loan['due_date']) >= time()): ?>
                                             <a href="/loans/<?= $loan['id'] ?>/renew" class="btn btn-sm btn-outline-primary">Renew</a>
                                         <?php endif; ?>
-                                        
-                                        <a href="/loans/<?= $loan['id'] ?>/delete" class="btn btn-sm btn-danger">Delete</a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
                 
                 <!-- Pagination -->
